@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,700&display=swap');
+
+:root {
+    --clr-border: #2B2B2B;
+    --clr-background: #C6C3D6;
+    --clr-operator: #009063;
+    --clr-numbers: #AAAAAA;
+    --clr-delete: #8685EF;
+    --clr-clear: #F7B4C4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    color: #222;
+    font-size: 20px;
+    height: 100vh;
+    line-height: 1.6;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+.calculator {
+    background-color: var(--clr-background);
+    padding: 20px;
+    width: 400px;
+    min-height: 75vh;
+
+    border: 2px solid var(--clr-border);
+    border-radius: 12px;
+}
+
+.screen {
+    background-color: #fff;
+    padding: 10px 20px;
+    border: 2px solid var(--clr-border);
+    border-radius: 5px;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.screen__last {
+    height: 35px;
+    font-size: 20px;
+}
+
+.screen__current {
+    height: 65px;
+    font-size: 45px;
+    line-height: 1.4;
+}
+
+.btns-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+}
+
+.span2 {
+    grid-column: span 2;
+}
+
+.btn {
+    padding: 20px;
+    font-size: inherit;
+    border-radius: 5px;
+    border: 2px solid var(--clr-border);
+}
+
+.btn:hover {
+    filter: brightness(80%);
+}
+
+.clear {
+    background-color: var(--clr-clear);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.delete {
+    background-color: var(--clr-delete);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.operator {
+    background-color: var(--clr-operator);
+}
+
+.number {
+    background-color: var(--clr-numbers);
+}
