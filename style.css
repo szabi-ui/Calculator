@@ -46,22 +46,22 @@ body {
     padding: 10px 20px;
     border: 2px solid var(--clr-border);
     border-radius: 5px;
-    text-align: right;
     margin-bottom: 20px;
 }
 
-.screen__last {
+.screen__last-calculation {
     color: #444;
-    height: 35px;
-    font-size: 14px;
-    font-weight: bold;
+    height: 50px;
+    font-size: 24px;
     letter-spacing: .5px;
 }
 
-.screen__current {
-    height: 65px;
-    font-size: 45px;
-    line-height: 1.4;
+.screen__current-calculation {
+    text-align: right;
+    height: 50px;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
 .btns-grid {

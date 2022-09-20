@@ -10,8 +10,12 @@
 <body>
     <main class="calculator">
         <div class="screen">
-            <div class="screen__last"></div>
-            <div class="screen__current">0</div>
+            <div class="screen__last-calculation">
+                <span class="firstOperand"></span>
+                <span class="operator-span"> </span>
+                <span class="secondOperand"> </span>
+            </div>
+            <div class="screen__current-calculation"></div>
         </div>
         <div class="btns-grid">
             <button data-clear class="btn span2 clear">clear</button>
@@ -28,7 +32,7 @@
             <button data-number class="btn number">2</button>
             <button data-number class="btn number">3</button>
             <button data-operator class="btn operator">-</button>
-            <button data-decimal class="btn decimal">.</button>
+            <button data-number class="btn decimal">.</button>
             <button data-number class="btn number">0</button>
             <button data-equal class="btn equal">=</button>
             <button data-operator class="btn operator">+</button>

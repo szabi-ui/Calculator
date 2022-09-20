@@ -1,67 +1,89 @@
 'use strict';
-
-// VARIBLES
-let firstOperand = '';
-let secondOperand = '';
-let currentOperation = null;
-let isSecondNumber = false;
-
-const lastNumber = document.querySelector('.screen__last');
-const currentNumber = document.querySelector('.screen__current');
+/*****************************
+       VARIABLES
+*****************************/
+const currentOperationScreen = document.querySelector('.screen__current-calculation');
 const numbers = document.querySelectorAll('[data-number]');
 const operators = document.querySelectorAll('[data-operator]');
 const clearAll = document.querySelector('[data-clear]');
 const deleteNum = document.querySelector('[data-delete]');
 const equal = document.querySelector('[data-equal]');
-const decimal = document.querySelector('[data-decimal]');
-
-// EVENT LISTENERS
+// vars used for strings
+const lastOperationScreen = document.querySelector('.screen__last-calculation');
+const firstOperandSpan = lastOperationScreen.querySelector('.firstOperand')
+const secondOperandSpan = lastOperationScreen.querySelector('.secondOperand');
+const operatorSpan = lastOperationScreen.querySelector('.operator-span')
+/*****************************
+       EVENT LISTENERS
+*****************************/
 numbers.forEach(number => {
     number.addEventListener('click', e => {
-        if(currentNumber.innerText === '0' || isSecondNumber) {
-            currentNumber.innerText = '';
-            isSecondNumber = false;
+        if(operatorSpan.innerText == '') {
+            if(firstOperandSpan.innerText.includes('.') && e.target.innerText == '.') {
+                return
+            }
+            else {
+                firstOperandSpan.innerText += e.target.innerText;
+            }
+        } else {
+            if(secondOperandSpan.innerText.includes('.') && e.target.innerText == '.') {
+                return
+            }
+            else {
+                secondOperandSpan.innerText += e.target.innerText;
+            }
         }
-        currentNumber.innerText += e.target.innerText;
     })
 })
 
 operators.forEach(operator => {
     operator.addEventListener('click', e => {
-        if(currentOperation) evaluate();
-        // HERE
-        firstOperand = currentNumber.innerText;
-        currentOperation = e.target.innerText;
-        isSecondNumber = true;
-        lastNumber.innerText = `${firstOperand} ${currentOperation}`;
+        if(firstOperandSpan.innerText != '' && secondOperandSpan.innerText == '') {
+            operatorSpan.innerText = e.target.innerText;
+        }
+        else if(firstOperandSpan != '' && secondOperandSpan.innerText != '') {
+            let calculation = operate(firstOperandSpan.innerText, secondOperandSpan.innerText, operatorSpan.innerText)
+            havesDot(calculation);
+            calculation.toString().includes('.') ? 
+                    firstOperandSpan.innerText = calculation.toFixed(3) :
+                    firstOperandSpan.innerText = calculation; 
+            operatorSpan.innerText = e.target.innerText;
+            secondOperandSpan.innerText = '';
+        }
+        else if(firstOperandSpan.innerText == '' && currentOperationScreen.innerText != '') {
+            firstOperandSpan.innerText = currentOperationScreen.innerText;
+            operatorSpan.innerText = e.target.innerText
+        }
     })
 })
 
-equal.addEventListener('click', () => {
-    secondOperand = currentNumber.innerText;
-    lastNumber.innerText += ` ${secondOperand}`;
-    currentNumber.innerText = operate(firstOperand, secondOperand, currentOperation);
-    if(firstOperand.includes('.') || secondOperand.includes('.')) {
-        return currentNumber.innerText = Number(currentNumber.innerText).toFixed(3);
+deleteNum.addEventListener('click', () => {
+    if(secondOperandSpan.innerText != '') {
+        secondOperandSpan.innerText = secondOperandSpan.innerText.slice(0, -1);
     }
-})
+    else if(operatorSpan.innerText != '') {
+        operatorSpan.innerText = '';
+    }else if(firstOperandSpan.innerText != '') {
+        firstOperandSpan.innerText = firstOperandSpan.innerText.slice(0, -1);
+    }
+});
+equal.addEventListener('click', compute)
 
-deleteNum.addEventListener('click', () => currentNumber.innerText = currentNumber.innerText.slice(0, -1));
-
-clearAll.addEventListener('click', () => {
-    currentNumber.innerText = '0';
-    lastNumber.innerText = ''
-    currentOperation = null;
-})
-
-decimal.addEventListener('click', (e) => {
-    if(currentNumber.innerText.includes('.')) return
-    currentNumber.innerText += '.';
-})
-
-// FUNCTIONS
-function evaluate(item) {
-// AND HERE
+clearAll.addEventListener('click', resetAll)
+/*****************************
+       FUNCTIONS
+*****************************/
+function compute() {
+    if(firstOperandSpan.innerText != '' && operatorSpan.innerText != '' && secondOperandSpan.innerText != '') {
+        let result = operate(firstOperandSpan.innerText, secondOperandSpan.innerText, operatorSpan.innerText)
+        havesDot(result);
+        firstOperandSpan.innerText = ''
+        secondOperandSpan.innerText = ''
+        operatorSpan.innerText = ''
+    }
+    else {
+        return alert('Wot you doing mon?');
+    } 
 }
 
 function add(a, b){
@@ -77,26 +99,52 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    if(b == '0') {
+        alert('Division by 0 is not possible ma dude!');
+        return '';
+    }
+    else {
+        return a / b;
+    }
 }
 
 function operate(a, b, operator) {
     a = Number(a);
     b = Number(b);
+    let result;
     switch (operator) {
         case '+':
-            return add(a, b);
+            result = add(a, b);
+            break;
         case '-':
-            return subtract(a, b);
+            result = subtract(a, b);
+            break;
         case 'x':
-            return multiply(a, b);
+            result = multiply(a, b);
+            break;
         case '÷':
-            return divide(a, b);
+            result = divide(a, b);
+            break;
         default:
-            return null;
-    } 
-
+            return;
+    }
+    return result;
 }
 
-// SETS YEAR FOR COPYRIGHT
+function resetAll() {
+    firstOperandSpan.innerText = ''
+    secondOperandSpan.innerText = ''
+    operatorSpan.innerText = ''
+    currentOperationScreen.innerText = '';
+}
+
+function havesDot(item) {
+    if(item.toString().includes('.')) {
+        currentOperationScreen.innerText = item.toFixed(3)
+    }
+    else {
+        currentOperationScreen.innerText = item;
+    }
+}
+
 document.querySelector('.year').textContent = new Date().getFullYear();
